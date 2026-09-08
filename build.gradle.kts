@@ -6,6 +6,7 @@ plugins {
     distribution
     id("com.netflix.nebula.ospackage") version "11.11.2"
     id("mmtc.java-conventions")
+    id("org.sonarqube") version "7.5.0.8588"
 }
 
 allprojects {
@@ -324,4 +325,11 @@ val mmtcWebAppContainerImageExport = tasks.register<Exec>(name="mmtcWebAppContai
 
     executable("bash")
     args("-c", "podman save mmtc-webapp:${project.version} | gzip > build/distributions/mmtc-webapp-${project.version}-container-image.tar.gz")
+}
+
+sonar {
+  properties {
+    property("sonar.projectKey", "johnnylu-jpl_MMTC")
+    property("sonar.organization", "johnnylu-jpl-testenv")
+  }
 }
