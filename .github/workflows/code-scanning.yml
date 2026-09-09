@@ -23,8 +23,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - language: java-kotlin
-            build-mode: none
+          - language: [java-kotlin]
 
     steps:
       - name: Checkout repository
@@ -42,7 +41,19 @@ jobs:
           # By default, queries listed here will override any specified in a config file.
           # Prefix the list here with "+" to use these queries and those in the config file.
           # queries: ./path/to/local/query, your-org/your-repo/queries@main
+      # - name: Build
+      #   run: |
+      #     ./configure
+      #     make
+      - name: Set up JDK for Build
+        uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
+        with:
+          java-version: 21
+          distribution: 'zulu'
 
+      - name: Build with Gradle
+        run: ./gradlew build -x test
+        
       - name: CodeQL Scan
         uses: github/codeql-action/analyze@v3 # v3
 
