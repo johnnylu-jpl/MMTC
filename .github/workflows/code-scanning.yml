@@ -16,26 +16,30 @@ permissions:
 
 jobs:
   analyze:
-    name: Analyze
-    runs-on: ubuntu-latest
+    name: Analyze (${{ matrix.language }})
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
 
     strategy:
       fail-fast: false
       matrix:
         include:
-          - language: java-kotlin
+        - language: actions
+          build-mode: none
+        - language: java-kotlin
+          build-mode: none # This mode only analyzes Java. Set this to 'autobuild' or 'manual' to analyze Kotlin too.
+        - language: javascript-typescript
+          build-mode: none
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+        uses: actions/checkout@v7
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3 # v3
+        uses: github/codeql-action/init@v4 # v4
         with:
           #config-file: ./.github/workflows/codeql/codeql-config.yml
           languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
           queries: security-and-quality, security-extended
           # If you wish to specify custom queries, you can do so here or in a config file.
           # By default, queries listed here will override any specified in a config file.
@@ -45,17 +49,21 @@ jobs:
       #   run: |
       #     ./configure
       #     make
-      - name: Set up JDK for Build
-        uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
-        with:
-          java-version: 21
-          distribution: 'zulu'
-
+      
+      # If the analyze step fails for one of the languages you are analyzing with
+      # "We were unable to automatically build your code", modify the matrix above
+      # to set the build mode to "manual" for that language. Then modify this step
+      # to build your code.
+      # ℹ️ Command-line programs to run using the OS shell.
+      # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
       - name: Build with Gradle
-        run: ./gradlew build -x test
+        if: matrix.build-mode == 'manual'
+        shell: bash
+        run: |
+          ./gradlew build
 
       - name: CodeQL Scan
-        uses: github/codeql-action/analyze@v3 # v3
+        uses: github/codeql-action/analyze@v4 # v4
 
       # This step is required to remove malformed data from the CodeQL output
       # It may be possible to remove in future iterations
@@ -83,11 +91,12 @@ jobs:
           name: codeql-artifacts
           path: ${{ env.RESULTS_DIR }}
 
-      - name: Set up JDK 21
+      - name: Set up JDK for Build
         uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
         with:
           java-version: 21
-          distribution: 'zulu' # Alternative distribution options are available
+          distribution: 'zulu'
+
       - name: Cache SonarQube packages
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
