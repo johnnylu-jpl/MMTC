@@ -5,6 +5,13 @@
  */
 
 rootProject.name = "mmtc"
+
+// Enable build cache for faster builds
+buildCache {
+    local {
+        isEnabled = true
+    }
+}
 include(":mmtc-core")
 include(":mmtc-output-plugin-sdk")
 include(":mmtc-plugin-ampcs")
