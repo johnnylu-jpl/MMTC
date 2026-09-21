@@ -78,14 +78,10 @@ tasks.jar {
     }
 }
 
-val setupTestPluginDir = tasks.register("setupTestPluginDir") {
+val setupTestPluginDir = tasks.register<Exec>("setupTestPluginDir") {
     dependsOn(tasks.assemble)
 
-    doLast {
-        exec {
-            commandLine("bash", "-c", "rm -r build/test-plugin-dir && mkdir build/test-plugin-dir && cp build/libs/mmtc-plugin-ampcs-${project.version}.jar build/test-plugin-dir/")
-        }
-    }
+    commandLine("bash", "-c", "rm -r build/test-plugin-dir && mkdir build/test-plugin-dir && cp build/libs/mmtc-plugin-ampcs-${project.version}.jar build/test-plugin-dir/")
 
     outputs.dir("build/test-plugin-dir")
 }

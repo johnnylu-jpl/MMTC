@@ -40,7 +40,7 @@ tasks.spotbugsMain {
     enabled = true
     reports.create("html") {
         required.set(true)
-        outputLocation.set(file("$buildDir/reports/spotbugs.html"))
+        outputLocation.set(layout.buildDirectory.file("reports/spotbugs.html"))
         setStylesheet("fancy-hist.xsl")
     }
 }
@@ -49,7 +49,7 @@ tasks.spotbugsTest {
     enabled = false    // disable SCA for test files, for now
     reports.create("html") {
         required.set(true)
-        outputLocation.set(file("$buildDir/reports/tests/spotbugsTest.html"))
+        outputLocation.set(layout.buildDirectory.file("reports/tests/spotbugsTest.html"))
         setStylesheet("fancy-hist.xsl")
     }
 }

@@ -59,7 +59,7 @@ val asciidoctor = tasks.register<JavaExec>("userGuidePdf") {
     )
 }
 
-val createDistDir = tasks.register("createDistDir") {
+val createDistDir = tasks.register<Exec>("createDistDir") {
     inputs.files("mmtc-core/bin/mmtc")
     inputs.files("mmtc-core/build/libs/mmtc-core-" + project.version + "-app.jar")
     inputs.files("mmtc-plugin-ampcs/build/libs/mmtc-plugin-ampcs-" + project.version + ".jar")
@@ -68,16 +68,12 @@ val createDistDir = tasks.register("createDistDir") {
     dependsOn("mmtc-plugin-ampcs:jar")
     dependsOn(":userGuidePdf")
 
-    doLast {
-        exec {
-            commandLine("bash", "create-dist.sh", project.version, "cli")
-        }
-    }
+    commandLine("bash", "create-dist.sh", project.version, "cli")
 
     outputs.dir("build/mmtc-dist-tmp")
 }
 
-val createWebAppDistDir = tasks.register("createWebappDistDir") {
+val createWebAppDistDir = tasks.register<Exec>("createWebappDistDir") {
     inputs.files("mmtc-core/bin/mmtc")
     inputs.files("mmtc-core/build/libs/mmtc-core-" + project.version + "-app.jar")
     inputs.files("mmtc-plugin-ampcs/build/libs/mmtc-plugin-ampcs-" + project.version + ".jar")
@@ -88,11 +84,7 @@ val createWebAppDistDir = tasks.register("createWebappDistDir") {
     dependsOn(":userGuidePdf")
     dependsOn("mmtc-webapp:jar")
 
-    doLast {
-        exec {
-            commandLine("bash", "create-dist.sh", project.version, "webapp")
-        }
-    }
+    commandLine("bash", "create-dist.sh", project.version, "webapp")
 
     outputs.dir("build/mmtc-webapp-dist-tmp")
 }
@@ -275,15 +267,12 @@ tasks.getByName("installMmtcWebAppDist") {
     dependsOn(createWebAppDistDir)
 }
 
-val demoZip = tasks.register("demoZip") {
+val demoZip = tasks.register<Exec>("demoZip") {
     dependsOn(tasks.build)
     dependsOn(createDistDir)
 
-    doLast {
-        exec {
-            commandLine("bash", "create-demo-zip.sh", project.version)
-        }
-    }
+    commandLine("bash", "create-demo-zip.sh", project.version)
+
     outputs.dir("build/mmtc-demo-tmp")
 }
 

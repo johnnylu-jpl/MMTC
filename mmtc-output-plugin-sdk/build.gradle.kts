@@ -46,7 +46,7 @@ tasks.jar {
     }
 }
 
-val createSdkDist = tasks.register("createSdkDist") {
+val createSdkDist = tasks.register<Exec>("createSdkDist") {
     inputs.dir("src/main")
     inputs.file("create-sdk-zip.sh")
 
@@ -54,12 +54,8 @@ val createSdkDist = tasks.register("createSdkDist") {
     dependsOn(":userGuidePdf")
     dependsOn(":mmtc-core:generatePomFileForMmtc-corePublication")
 
-    doLast {
-        exec {
-            workingDir(project.projectDir)
-            commandLine("bash", "create-sdk-zip.sh", project.version)
-        }
-    }
+    workingDir(project.projectDir)
+    commandLine("bash", "create-sdk-zip.sh", project.version)
 
     outputs.dir("build/mmtc-sdk-tmp")
 }
