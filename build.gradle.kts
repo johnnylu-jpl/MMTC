@@ -28,7 +28,7 @@ allprojects {
     }
 }
 
-val asciidoctorRuntime by configurations.creating
+val asciidoctorRuntime = configurations.create("asciidoctorRuntime")
 
 dependencies {
     asciidoctorRuntime("org.asciidoctor:asciidoctorj:2.5.7")

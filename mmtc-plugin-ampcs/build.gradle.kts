@@ -4,7 +4,7 @@ plugins {
     id("mmtc.java-conventions")
 }
 
-val precompiledJniSpiceClasses by configurations.creating {
+val precompiledJniSpiceClasses = configurations.create("precompiledJniSpiceClasses") {
     isCanBeConsumed = false
     isCanBeResolved = true
 }

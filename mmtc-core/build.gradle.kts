@@ -1,6 +1,4 @@
 import com.google.common.collect.Lists
-import org.gradle.internal.impldep.org.eclipse.jgit.util.Paths
-import java.lang.ProcessBuilder
 import java.time.Instant
 import java.nio.file.Files
 
@@ -9,7 +7,7 @@ plugins {
     `maven-publish`
 }
 
-val precompiledJniSpiceClasses by configurations.creating {
+val precompiledJniSpiceClasses = configurations.create("precompiledJniSpiceClasses") {
     isCanBeConsumed = false
     isCanBeResolved = true
 }
@@ -112,7 +110,9 @@ fun getCurrentCommitShortHash(): String {
     } else {
         workDir = project.projectDir
     }
-    val process = Runtime.getRuntime().exec("git rev-parse --short HEAD", arrayOf(), workDir)
+    val process = ProcessBuilder("git", "rev-parse", "--short", "HEAD")
+        .directory(workDir)
+        .start()
     val output = process.inputStream.bufferedReader().readText()
     process.waitFor()
     return output.trim()
@@ -130,6 +130,7 @@ fun calculateNewVersionDescriptionFileContents(): String {
 val writeVersionDescriptionFile = tasks.register("writeVersionDescriptionFile") {
     val versionDescriptionFilepath = project.layout.projectDirectory.file("src/main/resources/version-description.properties").asFile
     val currentCommitHash = getCurrentCommitShortHash()
+    val outputFile = versionDescriptionFilepath // capture at configuration time
 
     outputs.file(versionDescriptionFilepath)
 
@@ -139,7 +140,7 @@ val writeVersionDescriptionFile = tasks.register("writeVersionDescriptionFile") 
     }
 
     doLast {
-        project.projectDir.resolve("src/main/resources/version-description.properties").writeText(calculateNewVersionDescriptionFileContents())
+        outputFile.writeText(calculateNewVersionDescriptionFileContents())
     }
 }
 
@@ -148,8 +149,9 @@ tasks.getByName("sourcesJar") {
 }
 
 tasks.getByName("cleanWriteVersionDescriptionFile") {
+    val fileToDelete = project.layout.projectDirectory.file("src/main/resources/version-description.properties").asFile
     doLast {
-        project.projectDir.resolve("src/main/resources/version-description.properties").delete()
+        fileToDelete.delete()
     }
 }
 

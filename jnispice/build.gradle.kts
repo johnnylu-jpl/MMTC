@@ -14,7 +14,7 @@ tasks.jar {
     })
 }
 
-val precompiledClasses by configurations.creating {
+val precompiledClasses = configurations.create("precompiledClasses") {
     isCanBeConsumed = true
     isCanBeResolved = false
 }
