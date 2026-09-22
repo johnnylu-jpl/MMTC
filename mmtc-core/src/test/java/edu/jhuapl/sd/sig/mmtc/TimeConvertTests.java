@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * -Dlog4j.configurationFile=/path/to/log4j2.properties
  */
 
+@RequiresSpice
 public class TimeConvertTests {
     private static final int NH_SC_ID = 98;
 

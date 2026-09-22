@@ -1,5 +1,6 @@
 package edu.jhuapl.sd.sig.mmtc.table;
 
+import edu.jhuapl.sd.sig.mmtc.RequiresSpice;
 import edu.jhuapl.sd.sig.mmtc.app.MmtcException;
 import edu.jhuapl.sd.sig.mmtc.cfg.TimeCorrelationCliInputConfig;
 import edu.jhuapl.sd.sig.mmtc.cfg.TimeCorrelationRunConfig;
@@ -19,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.*;
 
+@RequiresSpice
 public class RawTelemetryTableTelemetrySourceTests {
     private TimeCorrelationRunConfig config;
     private RawTelemetryTableTelemetrySource tableTlmSource;

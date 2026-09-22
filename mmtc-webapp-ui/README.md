@@ -10,9 +10,22 @@ Stack:
 ### Requirements
 
 - [Node](https://nodejs.org/en/download)
-  - Tested to work with node v22.19.0
+  - Tested to work with node v22.19.0 and v23.3.0
 - [PNPM](https://get.pnpm.io)
-  - Tested to work with pnpm 10.18.1, 11.9.0
+  - Tested to work with pnpm 10.18.1, 11.9.0, 12.5.1
+  - **Important**: Node.js v23+ requires pnpm 12.5.1 or later
+  
+### Installing pnpm
+
+If pnpm is not installed, install it globally via npm:
+```bash
+npm install -g pnpm@latest
+```
+
+Verify installation:
+```bash
+pnpm --version
+```
 
 ## Building
 
@@ -36,6 +49,24 @@ This web application was originally made using the following:
 Followed some guidance in: https://pnpm.io/supply-chain-security:
 - With pnpm 10+, postinstall scripts are blocked by default
 - Set `minimumReleaseAge` and `blockExoticSubdeps`
+
+## Troubleshooting
+
+### "A problem occurred starting process 'command 'pnpm'"
+
+This error occurs when pnpm is not installed or not in your PATH. Install it globally:
+```bash
+npm install -g pnpm@latest
+```
+
+### "ERR_UNKNOWN_BUILTIN_MODULE: No such built-in module: node:sqlite"
+
+This error indicates pnpm version incompatibility with your Node.js version. Update to the latest pnpm:
+```bash
+npm install -g pnpm@latest
+```
+
+For Node.js v23+, you must use pnpm 12.5.1 or later.
 
 ## Updating the build and its dependencies
 

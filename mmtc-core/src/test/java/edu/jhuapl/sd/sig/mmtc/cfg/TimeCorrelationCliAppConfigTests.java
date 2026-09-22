@@ -1,5 +1,6 @@
 package edu.jhuapl.sd.sig.mmtc.cfg;
 
+import edu.jhuapl.sd.sig.mmtc.RequiresSpice;
 import edu.jhuapl.sd.sig.mmtc.app.MmtcException;
 import edu.jhuapl.sd.sig.mmtc.util.TimeConvert;
 import org.junit.jupiter.api.DisplayName;
@@ -29,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * find the default (non-test version) config file from src/main/resources since that's also on the classpath. The
  * tests will then be using unintented test inputs and giving you false results.
  */
+@RequiresSpice
 class TimeCorrelationCliAppConfigTests {
 
     @Test

@@ -1,5 +1,6 @@
 package edu.jhuapl.sd.sig.mmtc.tlm.selection;
 
+import edu.jhuapl.sd.sig.mmtc.RequiresSpice;
 import edu.jhuapl.sd.sig.mmtc.TestHelper;
 import edu.jhuapl.sd.sig.mmtc.app.MmtcException;
 import edu.jhuapl.sd.sig.mmtc.app.TimeCorrelationTarget;
@@ -21,6 +22,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+@RequiresSpice
 public abstract class BaseTelemetrySelectionStrategyTest {
     protected static final String RAW_TLM_TBL_NH_REFORMATTED = "src/test/resources/tables/RawTelemetryTable_NH_reformatted.csv";
     protected static final String RAW_TLM_TBL_NH_EMPTY = "src/test/resources/tables/RawTelemetryTable_NH_empty.csv";

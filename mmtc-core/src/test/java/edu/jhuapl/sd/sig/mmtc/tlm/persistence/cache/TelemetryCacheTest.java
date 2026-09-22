@@ -1,5 +1,6 @@
 package edu.jhuapl.sd.sig.mmtc.tlm.persistence.cache;
 
+import edu.jhuapl.sd.sig.mmtc.RequiresSpice;
 import edu.jhuapl.sd.sig.mmtc.cfg.TimeCorrelationCliInputConfig;
 import edu.jhuapl.sd.sig.mmtc.cfg.TimeCorrelationRunConfig;
 import edu.jhuapl.sd.sig.mmtc.tlm.CachingTelemetrySource;
@@ -27,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
+@RequiresSpice
 class TelemetryCacheTest {
     private TimeCorrelationRunConfig config;
     private RawTelemetryTableTelemetrySource vanillaRawTlmTableSource;

@@ -19,6 +19,7 @@ import spice.basic.SpiceErrorException;
  * -Dlog4j.configurationFile=/path/to/log4j2.properties
  */
 
+@RequiresSpice
 public class KernelLoadTests {
     @BeforeAll
     static void teardown() throws TimeConvertException {

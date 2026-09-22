@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+@RequiresSpice
 public class SclkScetFileTests {
     @BeforeAll
     static void teardown() throws TimeConvertException {

@@ -1,5 +1,6 @@
 package edu.jhuapl.sd.sig.mmtc.products.model.kernel.sclk;
 
+import edu.jhuapl.sd.sig.mmtc.RequiresSpice;
 import edu.jhuapl.sd.sig.mmtc.TestHelper;
 import edu.jhuapl.sd.sig.mmtc.products.definition.SclkKernelProductDefinition;
 import edu.jhuapl.sd.sig.mmtc.products.model.TextProductException;
@@ -21,6 +22,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@RequiresSpice
 class SclkKernelTest {
 
     @BeforeAll

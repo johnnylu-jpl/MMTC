@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * -Dlog4j.configurationFile=/path/to/log4j2.properties
  */
 
+@RequiresSpice
 public class OwltTests {
     private static final int SPICE_EARTH_CENTER_OF_MASS_ID = 399;
     private static final int SPICE_NH_SC_ID = -98;
