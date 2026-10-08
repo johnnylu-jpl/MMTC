@@ -14,4 +14,3 @@ export interface User {
   status: UserStatus
   location: string
 }
-}
