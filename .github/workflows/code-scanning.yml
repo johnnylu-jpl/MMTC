@@ -46,6 +46,11 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm@latest
 
+      - name: Install mmtc-webapp-ui dependencies
+        if: matrix.language == 'java-kotlin'
+        working-directory: mmtc-webapp-ui/mmtc-webapp-ui
+        run: pnpm install --frozen-lockfile
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4 # v4
         with:
