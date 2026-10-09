@@ -24,7 +24,7 @@ jobs:
       matrix:
         include:
         - language: java-kotlin
-          build-mode: none # This mode only analyzes Java. Set this to 'autobuild' or 'manual' to analyze Kotlin too.
+          build-mode: manual # 'none' only analyzes Java; Kotlin needs a real build to be extracted.
         - language: javascript-typescript
           build-mode: none
 
