@@ -91,9 +91,6 @@ jobs:
           sarif_files=`find $results_dir -name '*.sarif'`
           workspace_path="${{ github.workspace }}"
 
-          echo "SARIF files directory: $results_dir"
-          echo "Workspace path: $workspace_path"
-          echo "Available SARIF files:"
           ls -lh $results_dir/*.sarif
 
           for sarif_file in $sarif_files
@@ -110,16 +107,8 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4.3.1
         with:
-          name: codeql-artifacts-${{ matrix.language }}
+          name: codeql-artifacts
           path: ${{ env.RESULTS_DIR }}
-
-      - name: collect stripped .sarif file paths
-        shell: bash
-        run: |
-          sarif_paths="$(find "${{ github.workspace }}/../results" -name '*_stripped.sarif' -type f | paste -sd, -)"
-          echo "sarif paths: $sarif_paths"
-          test -n "$sarif_paths"
-          echo "SARIF_REPORT_PATHS=$sarif_paths" >> "$GITHUB_ENV"
 
       - name: Cache SonarQube packages
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
@@ -134,9 +123,17 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle', '**/*.gradle.kts') }}
           restore-keys: ${{ runner.os }}-gradle
 
+      - name: Download compiled classes
+        uses: actions/download-artifact@v5.0.0
+        with:
+          name: compiled-classes
+          path: build-output-for-sonar/
+
+      - name: Verify downloaded classes
+        run: ls -R build-output-for-sonar/
+
       - name: SonarQube Scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: >
           ./gradlew build sonar
-          -Dsonar.sarifReportPaths="${{ env.SARIF_REPORT_PATHS }}"
