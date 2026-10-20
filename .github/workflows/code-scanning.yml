@@ -91,6 +91,11 @@ jobs:
           results_dir=`realpath ${{ github.workspace }}/../results`
           sarif_files=`find $results_dir -name '*.sarif'`
 
+          echo "SARIF files directory: $results_dir"
+          echo "Workspace path: $workspace_path"
+          echo "Available SARIF files:"
+          ls -lh $results_dir/*.sarif
+
           for sarif_file in $sarif_files
           do
             output_file="$results_dir/$(basename $sarif_file .sarif)_stripped.sarif"
@@ -124,4 +129,7 @@ jobs:
       - name: SonarQube Scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew build sonar --info
+        run: >
+          ./gradlew build sonar
+          -Dsonar.gradle.scanAll=true
+          -Dsonar.sarifReportPaths="${{ env.RESULTS_DIR }}"
