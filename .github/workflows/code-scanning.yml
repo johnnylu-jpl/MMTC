@@ -26,8 +26,6 @@ jobs:
         include:
         - language: java-kotlin
           build-mode: manual # 'none' only analyzes Java; Kotlin needs a real build to be extracted.
-        - language: javascript-typescript
-          build-mode: none
 
     steps:
       - name: Checkout repository
@@ -128,3 +126,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: >
           ./gradlew build sonar
+          -Dsonar.verbose=true
