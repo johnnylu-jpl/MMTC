@@ -320,5 +320,7 @@ sonar {
   properties {
     property("sonar.projectKey", "johnnylu-jpl_MMTC")
     property("sonar.organization", "johnnylu-jpl-testenv")
+    property("sonar.host.url", "https://sonarcloud.io")
+    property("sonar.sarifReportPaths", "${rootDir}/../results/java.sarif")
   }
 }

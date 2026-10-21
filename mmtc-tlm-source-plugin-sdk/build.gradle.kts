@@ -2,7 +2,6 @@ import java.time.Instant
 
 plugins {
     id("mmtc.java-conventions")
-    id "org.sonarqube"
 }
 
 java {
