@@ -122,6 +122,8 @@ jobs:
           restore-keys: ${{ runner.os }}-gradle
 
       - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v6.0.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: >
+          ./gradlew sonar
+          -Dsonar.verbose=true
