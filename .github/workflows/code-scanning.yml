@@ -122,10 +122,12 @@ jobs:
         run: pwd; ls -R codeql-artifacts-for-sonar/
 
       - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5.3.1
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: >
-          ./gradlew build sonar
-          -Dsonar.verbose=true
-          -Dsonar.organization=johnnylu-jpl-testenv
-          -Dsonar.projectKey=johnnylu-jpl_MMTC
+        with:
+          projectBaseDir: .
+          args: >
+            -Dsonar.organization=johnnylu-jpl-testenv
+            -Dsonar.projectKey=johnnylu-jpl_MMTC
+            -Dsonar.verbose=true
