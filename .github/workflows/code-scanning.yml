@@ -4,6 +4,7 @@ on:
     branches:
       - main
       - test
+      - dcs_clone
   pull_request:
     types: [opened, synchronize, reopened]
 
@@ -29,7 +30,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@v4
 
       - name: Set up JDK for Build
         uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
@@ -51,7 +52,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v4 # v4
+        uses: github/codeql-action/init@v3 # v3
         with:
           #config-file: ./.github/workflows/codeql/codeql-config.yml
           languages: ${{ matrix.language }}
@@ -99,31 +100,32 @@ jobs:
           done
 
           echo "RESULTS_DIR=$results_dir" >> $GITHUB_ENV
+          echo "Results generated: "
+          echo $results_dir
 
       # This step makes the analysis artifacts available for download
       # This can be helpful for debugging and archive purposes
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v4.3.1
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: codeql-artifacts
           path: ${{ env.RESULTS_DIR }}
 
-      - name: Cache SonarQube packages
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+      # Download SARIF files for Sonar scan
+      - name: Download SARIF Files
+        uses: actions/download-artifact@v5.0.0
         with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-      - name: Cache Gradle packages
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle', '**/*.gradle.kts') }}
-          restore-keys: ${{ runner.os }}-gradle
+          name: codeql-artifacts
+          path: codeql-artifacts-for-sonar/
+
+      - name: Verify downloaded SARIF files
+        run: pwd; ls -R codeql-artifacts-for-sonar/
 
       - name: SonarQube Scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: >
-          ./gradlew sonar
+          ./gradlew build sonar
           -Dsonar.verbose=true
+          -Dsonar.organization=johnnylu-jpl-testenv
+          -Dsonar.projectKey=johnnylu-jpl_MMTC
