@@ -30,7 +30,9 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
 
       - name: Set up JDK for Build
         uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
@@ -71,14 +73,14 @@ jobs:
       # to build your code.
       # ℹ️ Command-line programs to run using the OS shell.
       # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
-      - name: Build with Gradle
-        if: matrix.build-mode == 'manual'
-        shell: bash
+      - if: matrix.build-mode == 'manual'
         run: |
           ./gradlew build
 
       - name: CodeQL Scan
-        uses: github/codeql-action/analyze@v3 # v3
+        uses: github/codeql-action/analyze@v4 # v4
+        with:
+          category: "/language:${{matrix.language}}"
 
       # This step is required to remove malformed data from the CodeQL output
       # It may be possible to remove in future iterations
@@ -122,12 +124,7 @@ jobs:
         run: pwd; ls -R codeql-artifacts-for-sonar/
 
       - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v5.3.1
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          projectBaseDir: .
-          args: >
-            -Dsonar.organization=johnnylu-jpl-testenv
-            -Dsonar.projectKey=johnnylu-jpl_MMTC
-            -Dsonar.verbose=true
+        run: >
+          ./gradlew build sonar --info
