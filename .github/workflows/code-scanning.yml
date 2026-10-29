@@ -127,4 +127,6 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: >
-          ./gradlew build sonar --info
+          ./gradlew build sonar --info 
+          -Dsonar.organization=johnnylu-jpl-testenv
+          -Dsonar.projectKey=johnnylu-jpl_MMTC
