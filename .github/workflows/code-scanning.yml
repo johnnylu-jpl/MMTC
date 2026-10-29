@@ -72,9 +72,14 @@ jobs:
       # to build your code.
       # ℹ️ Command-line programs to run using the OS shell.
       # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
+      - if: matrix.build-mode == 'manual'
+        run: |
+          ./gradlew build
 
       - name: CodeQL Scan
         uses: github/codeql-action/analyze@v4 # v4
+        with:
+          category: "/language:${{matrix.language}}"
 
       # This step is required to remove malformed data from the CodeQL output
       # It may be possible to remove in future iterations
