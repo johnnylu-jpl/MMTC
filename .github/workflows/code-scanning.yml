@@ -54,7 +54,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3 # v3
+        uses: github/codeql-action/init@v4 # v4
         with:
           #config-file: ./.github/workflows/codeql/codeql-config.yml
           languages: ${{ matrix.language }}
